@@ -1,48 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_str_is_alpha.c                                  :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anbelose <anbelose@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/20 19:15:53 by anbelose          #+#    #+#             */
-/*   Updated: 2025/02/20 19:15:57 by anbelose         ###   ########.fr       */
+/*   Created: 2025/02/23 13:18:07 by anbelose          #+#    #+#             */
+/*   Updated: 2025/02/23 13:18:09 by anbelose         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <unistd.h>
+#include <string.h>
 
-int ft_isalpha(char c)
+char *ft_strncpy(char *dest, char *src, unsigned int n)
 {
-    if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
-        return (1);
-    return (0);
-}
+    unsigned int i;
 
-int ft_str_is_alpha(char *str)
-{
-    int i;
-
-    if (!str)
-        return (0);
-    if (!(str[0]))
-        return (1);
     i = 0;
-    while (str[i])
+    while (i < n && src[i])
     {
-        if (!(ft_isalpha(str[i])))
-            return (0);
+        dest[i] = src[i];
         i++;
     }
-    return (1);
+    return (dest);
 }
 
 int main()
 {
-    char *s = "";
-    if(ft_str_is_alpha(s))
-        write(1, "yes", 4);
-    else
-        write(1, "no", 2);
+    char *src = "01234";
+    //char std_dst[10];
+    char my_dst[10];
+    //strncpy(std_dst, src, 11);
+    ft_strncpy(my_dst, src, 6);
+    printf("original %s\n", src);
+    //printf("std function %s\n", std_dst);
+    printf("my function %s\n", my_dst);
     return 0;
 }
