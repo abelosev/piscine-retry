@@ -39,7 +39,7 @@ int ft_str_is_numeric(char *str)
 
 int main()
 {
-	char *s = NULL;
+	char *s = "00o123";
 	if(ft_str_is_numeric(s))
 		write(1, "yes", 4);
 	else
