@@ -31,7 +31,7 @@ unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
 
 	i = 0;
 	src_len = ft_strlen(src);
-	if (size == 0)
+	if (!dst || size == 0)
 		return (src_len);
 	while (i < size - 1 && src[i])
 	{
