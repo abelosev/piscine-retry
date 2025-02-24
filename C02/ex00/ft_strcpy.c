@@ -4,6 +4,15 @@
 #include <unistd.h>
 #include <string.h>
 
+void ft_putstr(char *s)
+{
+	while(*s)
+	{
+		write(1, s, 1);
+		s++;
+	}
+}
+
 char *ft_strcpy(char *dest, char *src)
 {
 	int i;
