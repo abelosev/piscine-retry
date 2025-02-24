@@ -26,16 +26,20 @@ int	ft_strlen(char *s)
 
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
 {
-	int i;
+	unsigned int i;
+	int src_len;
 
 	i = 0;
+	src_len = ft_strlen(src);
+	if (size == 0)
+		return (src_len);
 	while (i < size - 1 && src[i])
 	{
 		dest[i] = src[i];
 		i++;
 	}
 	dest[i] = '\0';
-	return (ft_strlen(src));
+	return (src_len);
 }
 
 int main()
