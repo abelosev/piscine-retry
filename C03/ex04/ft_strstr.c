@@ -5,33 +5,42 @@
 
 char *ft_strstr(char *str, char *to_find)
 {
-	int len;
-	char *to_find_start;
+	int i;
 
+	if (!str || !to_find)
+		return (NULL);
 	if (!(*to_find))
 		return (str);
-
-	len = strlen(to_find);
-	to_find_start = to_find;
-
-	while (*str && *to_find && *str == *to_find)
+	while(*str)
 	{
-		(str)++;
-		to_find++;
+		i = 0;
+		while (*str && to_find[i] && *str == to_find[i])
+		{
+			i++;
+			str++;
+		}
+		if (!to_find[i])
+			return (str - i);
+		str -= i - 1;
 	}
-	if (!(*to_find))
-		return (str - len);
-	to_find = to_find_start;
-
 	return (NULL);
 }
 
 int main()
 {
-	char *str = "1234567819";
-	char *to_find = "2";
+	char str[] = "12345678";
+	char to_find[] = "";
+
+	// char str[] = "ababcabc";
+	// char to_find[] = "abc";
+
+	// char str[] = "abcabcabcd";
+	// char to_find[] = "abcabcd";
+
 	// char str[] = "ababcd";
 	// char to_find[] = "abcd";
+	// char *str = NULL;
+	// char *to_find = NULL;
 	printf("strstr %s\n", strstr(str, to_find));
 	printf("ft_strstr %s\n", ft_strstr(str, to_find));
 	return 0;
