@@ -14,7 +14,7 @@
 #include <unistd.h>
 #include <bsd/string.h>
 
-int	ft_strlen(char *s)
+unsigned int	ft_strlen(char *s)
 {
 	int i;
 
@@ -27,11 +27,11 @@ int	ft_strlen(char *s)
 unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
 {
 	unsigned int i;
-	int src_len;
+	unsigned int src_len;
 
 	i = 0;
 	src_len = ft_strlen(src);
-	if (!dst || size == 0)
+	if (!dest || size == 0)
 		return (src_len);
 	while (i < size - 1 && src[i])
 	{
@@ -44,14 +44,14 @@ unsigned int	ft_strlcpy(char *dest, char *src, unsigned int size)
 
 int main()
 {
-	char *src = NULL;
+	char *src = "123";
 	char dst[6];
 	char my_dst[6];
 	strlcpy(dst, src, 6);
-	//ft_strlcpy(my_dst, src, 6);
+	ft_strlcpy(my_dst, src, 6);
 	printf("dst %s\n", dst);
-	//printf("my_dst %s\n", my_dst);
-	// printf("len1 %zu\n", strlcpy(dst, src, 6));
-	// printf("len2 %u\n", ft_strlcpy(my_dst, src, 6));
+	printf("my_dst %s\n", my_dst);
+	printf("len1 %zu\n", strlcpy(dst, src, 6));
+	printf("len2 %u\n", ft_strlcpy(my_dst, src, 6));
 	return 0;
 }
