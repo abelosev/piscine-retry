@@ -39,7 +39,7 @@ int main()
 	// str[0] = 127;
 	// str[1] = '\0';
 
-	// char *s = "hello\n";
-	ft_putstr_non_printable(str);
+	char *s = "hello\n";
+	ft_putstr_non_printable(s);
 	return 0;
 }
