@@ -1,33 +1,40 @@
-
 #include <unistd.h>
 #include <stdio.h>
-#include <limits.h>
 #include <stdlib.h>
 
-// int ft_atoi(char *s)
-// {
+int base_check(char *base)
+{
+	int i;
+	int k;
+	char *to_compare;
 
-// }
+	if (!base || !(base[0]) || !(base[1]))
+		return (1);
+	i = 0;
+	while(base[i])
+	{
+		if (base[i] == '+' || base[i] == '-' || base[i] == ' ')
+			return (1);
+		to_compare = base + i;
+		k = i + 1;
+		while (base[k])
+		{
+			if (base[k] == *to_compare)
+				return (1);
+			k++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 
 void ft_putnbr_base(int nbr, char *base)
 {
-	//if (nbr == INT_MIN)
-
-	char hex[16] = "0123456789abcdef";
-	
-	if (nbr >= atoi(base))
-	{
-		ft_putnbr_base(nbr / atoi(base), base);
-		nbr = nbr % atoi(base);
-	}
-	write(1, &hex[nbr], 1);
 	
 }
 
 int main()
 {
-	char base[] = "2";
-	int nbr = 127;
-	ft_putnbr_base(nbr, base);
-	return 0;
+	
 }
