@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <limits.h>
 
 int ft_sqrt(int nb)
 {
@@ -10,7 +11,7 @@ int ft_sqrt(int nb)
     res = 0;
     while (res <= nb)
     {
-        if (res * res == nb)
+        if (res * res < INT_MAX && res * res == nb)
             return (res);
         res++;
     }
