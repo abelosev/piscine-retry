@@ -25,10 +25,10 @@ int ft_find_next_prime(int nb)
 
     if (nb < 2)
         return (2);
-    if (nb == INT_MAX)
+    if (ft_is_prime(nb))
         return (nb);
-    res = nb;
-    while (res < nb)
+    res = nb + 1;
+    while (res <= INT_MAX)
     {
         if(ft_is_prime(res))
             return (res);
@@ -39,5 +39,8 @@ int ft_find_next_prime(int nb)
 
 int main()
 {
+    int nb = 5;
 
+    printf("next prime %d\n", ft_find_next_prime(nb));
+    return 0;
 }
