@@ -41,12 +41,12 @@ int *ft_range(int min, int max)
     return (res);
 }
 
-int main()
-{
-    int min = 5;
-    int max = 5;
-    int *res = ft_range(min, max);
-    if (!res)
-        printf("null ptr\n");
-    return (0);
-}
+// int main()
+// {
+//     int min = 5;
+//     int max = 5;
+//     int *res = ft_range(min, max);
+//     if (!res)
+//         printf("null ptr\n");
+//     return (0);
+// }
