@@ -11,49 +11,49 @@ int ft_strlen(char *s)
     return (i);
 }
 
-// void    ft_putstr(char *s)
-// {
-//     int i;
+void    ft_putstr(char *s)
+{
+    int i;
 
-//     i = 0;
-//     while(s[i])
-//     {
-//         write(1, &s[i], 1);
-//         i++;
-//     }
-// }
+    i = 0;
+    while(s[i])
+    {
+        write(1, &s[i], 1);
+        i++;
+    }
+}
 
-// void    ft_putnbr(int n)
-// {
-//     char c;
+void    ft_putnbr(int n)
+{
+    char c;
 
-//     if (n >= 10)
-//     {
-//         ft_putnbr(n / 10);
-//         n = n % 10;
-//     }
-//     c = n + '0';
-//     write(1, &c, 1);
-// }
+    if (n >= 10)
+    {
+        ft_putnbr(n / 10);
+        n = n % 10;
+    }
+    c = n + '0';
+    write(1, &c, 1);
+}
 
-// void ft_show_tab(struct s_stock_str *par)
-// {
-//     int i;
-//     int len;
+void ft_show_tab(struct s_stock_str *par)
+{
+    int i;
+    int len;
 
-//     i = 0;
-//     while(par[i].str)
-//     {
-//         len = ft_strlen(par[i].str);
-//         ft_putstr(par[i].str);
-//         write(1, "\n", 1);
-//         ft_putnbr(len);
-//         write(1, "\n", 1);
-//         ft_putstr(par[i].copy);
-//         write(1, "\n", 1);
-//         i++;
-//     }
-// }
+    i = 0;
+    while(par[i].str)
+    {
+        len = ft_strlen(par[i].str);
+        ft_putstr(par[i].str);
+        write(1, "\n", 1);
+        ft_putnbr(len);
+        write(1, "\n", 1);
+        ft_putstr(par[i].copy);
+        write(1, "\n", 1);
+        i++;
+    }
+}
 
 char	*ft_strdup(char *src)
 {
@@ -83,7 +83,8 @@ void    free_tab(t_stock_str *tab)
     i = 0;
     while (tab[i].str)
     {
-        free(tab[i].str);
+		if (tab[i].copy)
+        	free(tab[i].copy);
         i++;
     }
     free(tab);
@@ -101,16 +102,17 @@ struct s_stock_str *ft_strs_to_tab(int ac, char **av)
     while(i < ac)
     {
         tab[i].size = ft_strlen(av[i]);
-        tab[i].str = ft_strdup(av[i]);
-        if (!(tab[i].str))
+        tab[i].str = av[i];
+        tab[i].copy = ft_strdup(av[i]);
+		if (!(tab[i].copy))
         {
             free_tab(tab);
             return (NULL);
         }
-        tab[i].copy = tab[i].str;
         i++;
     }
     tab[i].str = NULL;
+	tab[i].copy = NULL;
     return (tab);
 }
 
