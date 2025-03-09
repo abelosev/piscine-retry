@@ -30,9 +30,8 @@ int main(int ac, char **av)
     }
     line_from_file = ft_readline(dico);
     tab = ft_separate(line_from_file, "\n");
-    // print_tab(tab);
     
     total = struct_total(tab);
-    // print_dico_str(total);
+    print_dico_str(total);
     return (0);
 }

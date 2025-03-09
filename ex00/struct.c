@@ -1,116 +1,119 @@
 #include "ft.h"
 
-int  find_2_points(char *line)
+int ft_strlen(char *s)
 {
-    int i;
-    
-    i = 0;
-    while (line[i] != '\0')
-    {
-        if (line[i] == ':')
-            return (i);
-        i++;
-    }
-    return (0);
+	int i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
 
-int create_value(char *line, t_dico *element)
+char *ft_strchr(char *str, char c)
 {
-    int len_val;
-    int i;
-    int k;
-    
-    i = find_2_points(line);
-    len_val = 0;
-    while (line[i] == ' ')
-        i++;
-    if (line[i] == '\0')
+    while (*str) {
+        if (*str == c)
+            return str;
+        str++;
+    }
+    return NULL;
+}
+
+char *ft_strndup(char *src, int n)
+{
+	int i;
+
+	i = 0;
+    char *dest = malloc(n + 1);
+    if (!dest)
+        return NULL;
+	while (i < n)
     {
+        dest[i] = src[i];
+		i++;
+	}
+    dest[i] = '\0';
+    return dest;
+}
+
+char *cut_spaces(char *str)
+{
+    while (*str == ' ')
+        str++;
+    if (!(*str))
+        return ft_strdup("");
+
+    int len = ft_strlen(str);
+    char *end = str + len - 1;
+    while (end > str && *end == ' ')
+        end--;
+
+    int new_len = end - str + 1;
+    return ft_strndup(str, new_len);
+}
+
+int split_key_value(char *line, char **key, char **value)
+{
+    char *two_points = ft_strchr(line, ':');
+    if (!two_points) {
         ft_putstr_fd(2, "Dict Error\n");
-        return (0);
+        return 0;
     }
-    while (line[i] && line[i] != ' ')
-    {      
-        len_val++;
-        i++;
-    }
-    element->value = malloc(sizeof(char) * (len_val + 1));
-    if (element->value == NULL)
-    {
-        ft_putstr_fd(2, "Malloc Error\n");
-        return (0);
-    }
-    i -= len_val;
-    k = 0;
-    while (k < len_val)
-    {
-        element->value[k] = line[i + k];
-        k++;
-    }
-    element->value[k] = '\0';
-    return (1);
+    *two_points = '\0';
+    *key = cut_spaces(line);
+    *value = cut_spaces(two_points + 1);
+    return 1;
 }
 
-int create_key(char *line, t_dico *element)
-{
-    int i;
-    int len_key;
-    int k;
+t_dico create_element(char *line) {
+    t_dico element;
+    char *key = NULL;
+    char *value = NULL;
 
-    i = find_2_points(line);
-    len_key = 0;
-    while (i >= 0 && line[i] != ' ')
-    {
-        len_key++;
-        i--;
+    element.key = NULL;
+    element.value = NULL;
+
+    if (!split_key_value(line, &key, &value)) {
+        return element;
     }
-    element->key = malloc(sizeof(char) * (len_key + 1));
-    if (!element->key)
-    {
-        if (element->value)
-            free(element->value);
-        ft_putstr_fd(2, "Malloc Error\n");
-        return (0);
+
+    element.key = ft_strndup(key, ft_strlen(key));
+    element.value = ft_strndup(value, ft_strlen(value));
+
+    if (!element.key || !element.value) {
+        free(element.key);
+        free(element.value);
+        element.key = NULL;
+        element.value = NULL;
     }
-    k = 0;
-    while (k < len_key)
-    {
-        element->key[k] = line[i + k];
-        element->nb = ft_atoi(element->key);
-        k++;
-    }
-    element->key[k] = '\0';
-    return (1);
+    return element;
 }
 
 t_dico *struct_total(char **tab)
 {
     int line_nb;
-    int i;
-    t_dico *total;
+	t_dico *total;
+	int i;
 
-    line_nb = 0;
+	line_nb = 0;
     while (tab[line_nb])
         line_nb++;
-    total = malloc(sizeof(t_dico) * (line_nb + 1));
+	total = malloc(sizeof(t_dico) * (line_nb + 1));
     if (!total)
-        return (NULL);
-    printf("HERE %p\n", total);
-    i = 0;
-    while (tab[i])
-    {
-        create_value(tab[i], &total[i]);
-        create_key(tab[i], &total[i]);
-        total[i].nb = ft_atoi(total[i].key);
-        // if (!total[i])
-        // {
-        //     //free_struct
-        //     //return (NULL);
-        // }
-        i++;
-    }
-    total[i].key = NULL;
-    total[i].value = NULL;
-    print_dico_str(total);
+        return NULL;
+	i = 0;
+	while (i < line_nb)
+	{
+		total[i] = create_element(tab[i]);
+		if (!(total[i].key) || !(total[i].value))
+		{
+			//free_struct
+			return (NULL);
+		}
+		i++;
+	}
+    total[line_nb].key = NULL;
+	total[line_nb].value = NULL;
     return (total);
 }

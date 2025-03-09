@@ -7,7 +7,7 @@
 #include <fcntl.h>
 
 typedef struct s_dico {
-    long long nb;
+    // long long nb;
     char *key;
     char *value;
 }   t_dico;
