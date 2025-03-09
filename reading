@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+char* read_file(const char* filename) {
+    int fd = open(filename, O_RDONLY);
+    if (fd == -1) {
+        perror("Error opening file");
+        return NULL;
+    }
+
+    char* buffer = NULL;  // Начальное значение буфера
+    char tempBuf[1024];   // Временный буфер для чтения
+    int totalSize = 0;    // Общий размер прочитанных данных
+
+    ssize_t bytesRead;
+    while ((bytesRead = read(fd, tempBuf, sizeof(tempBuf) - 1)) > 0) {
+        char* newBuffer = realloc(buffer, totalSize + bytesRead + 1);
+        if (newBuffer == NULL) {
+            perror("Realloc failed");
+            free(buffer);
+            close(fd);
+            return NULL;
+        }
+        buffer = newBuffer;
+        
+        // Заменяем memcpy на цикл посимвольного копирования
+        for (int i = 0; i < bytesRead; ++i) {
+            buffer[totalSize + i] = tempBuf[i];
+        }
+        
+        totalSize += bytesRead;
+    }
+
+    if (bytesRead == -1) {
+        perror("Error reading file");
+        free(buffer);
+        close(fd);
+        return NULL;
+    }
+
+    if (buffer) {
+        buffer[totalSize] = '\0'; // Завершаем строку нулевым символом
+    }
+
+    close(fd);
+    return buffer;
+}
+
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
+        return 1;
+    }
+
+    char* data = read_file(argv[1]);
+    if (data == NULL) {
+        return 1; // Ошибка при чтении файла
+    }
+
+    printf("File contents:\n%s\n", data);
+    free(data); // Освобождаем память, выделенную для данных файла
+
+    return 0;
+}
