@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+int get_file_size(int fd)
+{
+	ssize_t total;
+	ssize_t spoon_size = 1024;
+	ssize_t b_read;
+	char spoon[spoon_size];
+
+	total = 0;
+	while ((b_read = read(fd, spoon, spoon_size)) > 0)
+	{
+		total += b_read;
+	}
+	return (total);
+}
+
+char *ft_readfile(char *name)
+{
+	int fd = open(name, O_RDONLY);
+	if (fd < 0)
+		return (NULL);
+	ssize_t total = get_file_size(fd);
+
+	close(fd);
+	fd = open(name, O_RDONLY);
+	char *res = malloc(sizeof(char) * (total + 1));
+	ssize_t b_read = read(fd, res, total + 1);
+	if (b_read < 0)
+	{
+		close(fd);
+		return (NULL);
+	}
+	res[total] = '\0';
+	return (res);
+}
+
+
+int main(int ac, char **av)
+{
+	char *s = ft_readfile(av[1]);
+	printf("%s\n", s);
+	return 0;
+}
