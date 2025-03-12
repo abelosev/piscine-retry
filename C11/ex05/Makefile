@@ -9,7 +9,7 @@ SRC = ft_atoi.c \
 		main.c \
 		operators.c
 
-OBJ = $(SRC:.c = .o)
+OBJ = $(SRC:.c=.o)
 
 all : $(NAME)
 
@@ -22,7 +22,7 @@ $(NAME) : $(OBJ)
 clean : 
 	rm -f $(OBJ)
 
-fclean :
+fclean : clean
 	rm -f $(NAME)
 
 re : fclean all
