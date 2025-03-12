@@ -3,79 +3,59 @@
 #include <string.h>
 #include <stdlib.h>
 
-void    ft_putstr(char *s)
-{
-    int i;
-    
-    i = 0;
-    while(s[i])
-    {
-        write(1, &s[i], 1);
-        i++;
-    }
-}
-
-void    print_tab(char **tab)
-{
-    int i;
-
-    i = 0;
-    while (tab[i])
-    {
-        ft_putstr(tab[i]);
-        write(1, "\n", 1);
-        i++;
-    }
-}
-
 unsigned int	ft_strlen(char *s)
 {
 	unsigned int	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
 		i++;
 	return (i);
 }
 
-unsigned int	ft_strlcat(char *dest, char *src, unsigned int size)
+void ft_strcat(char *dest, char *src)
 {
-	unsigned int	dst_len;
-	unsigned int	src_len;
-	unsigned int	j;
+	int dst_len;
+	int j;
 
-	src_len = ft_strlen(src);
+	if (!src)
+		return ;
 	dst_len = ft_strlen(dest);
-	if (size <= dst_len)
-		return (src_len + size);
-	else if (size == dst_len + 1)
-		return (src_len + dst_len);
 	j = 0;
-	while (j < size - dst_len - 1 && src[j])
+	while (src[j])
 	{
 		dest[dst_len + j] = src[j];
 		j++;
 	}
 	dest[dst_len + j] = '\0';
-	return (src_len + dst_len);
 }
 
-int str_len(int size, char **strs, char *sep)
+char *do_empty()
 {
-    int i;
-    int len;
+	char *res = malloc(1);
+	if (!res)
+		return (NULL);
+	res[0] = '\0';
+	return (res);
+}
 
-    i = 0;
-    len = 0;
-    while (i < size - 1)
-    {
-        len += ft_strlen(strs[i]);
-        if (ft_strlen(strs[i]))     // A MODIFIER ?
-            len += ft_strlen(sep);
-        i++;
-    }
-    len += ft_strlen(strs[i]) + 1;
-    return (len);
+int count_len(int size, char **strs, char *sep)
+{
+	int i;
+	int len;
+
+	i = 0;
+	len = 0;
+	while (i < size)
+	{
+		len += ft_strlen(strs[i]);
+		if (i != size - 1)
+			len += ft_strlen(sep);
+		i++;
+	}
+	return (len);
 }
 
 char *ft_strjoin(int size, char **strs, char *sep)
@@ -84,55 +64,56 @@ char *ft_strjoin(int size, char **strs, char *sep)
     int len;
     int i;
 
-    if (size == 0 || !strs[0][0])
-    {
-        str = malloc(1);
-        if (!str)
-            return (NULL);
-        str[0] = '\0';
-    }
-    len = str_len(size, strs, sep);
-    str = malloc(sizeof(char) * len);
-    if (!str)
-        return (NULL);
+	i = 0;
+	if (size == 0)
+		return(do_empty());
+	len = count_len(size, strs, sep);
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	str[0] = '\0';
+	while (i < size)
+	{
+		ft_strcat(str, strs[i]);
+		if (i != size - 1)
+			ft_strcat(str, sep);
+		i++;
+	}
+	str[len] = '\0';
+	return (str);
+}
+
+char *ft_strdup(char *src)
+{
+    int i;
+    int len;
+    char *res;
+
     i = 0;
-    while(i < size)
+    len = ft_strlen(src) + 1;
+    res = malloc(sizeof(char) * len);
+    if (!res)
+        return (NULL);
+    while(src[i])
     {
-        // if(!strs[i][0])
-        //     i++;
-        ft_strlcat(str, strs[i], len);
-        ft_strlcat(str, sep, len);
+        res[i] = src[i];
         i++;
     }
-    str[len] = '\0';
-    return (str);
+    res[i] = '\0';
+    return (res);
 }
+
 
 int main()
 {
-    char *sep = malloc(sizeof(char *) * 3);
-    sep[0] = ' ';
-    sep[1] = 'a';
-    sep[2] = ' ';
+	unsigned int size = 3;
     char **strs = malloc(sizeof(char *) * 4);
-    strs[0] = malloc(3);
-    strs[1] = malloc(3);
-    strs[2] = malloc(1);
-    strs[3] = NULL;
-    strs[0][0] = '1';
-    strs[0][1] = '2';
-    strs[0][2] = '3';
-    strs[1][0] = '4';
-    strs[1][1] = '5';
-    strs[1][2] = '6';
-    strs[2][0] = '\0';
-    // strs[2][1] = '8';
-    // strs[2][2] = '9';
-    unsigned int size = 3;
-    printf("Tab :\n");
-    print_tab(strs);
-    char *res = ft_strjoin(size, strs, sep);
-    printf("Res :\n");
-    ft_putstr(res);
+    strs[0] = "";
+    strs[1] = "456";
+    strs[2] = "789";
+	strs[3] = NULL;
+
+    char *sep = ft_strdup("ab");
+    printf("%s\n", ft_strjoin(size, strs, sep));
     return (0);
 }
